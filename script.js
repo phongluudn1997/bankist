@@ -3,6 +3,7 @@ const tabsContainer = document.querySelector(".operations__tab-container");
 const tabs = document.querySelectorAll(".operations__tab");
 const operationsContent = document.querySelectorAll(".operations__content");
 const header = document.querySelector(".header");
+const section1 = document.getElementById("section--1");
 
 message.classList.add("cookie-message");
 message.innerHTML =
@@ -20,7 +21,6 @@ document
 document
   .querySelector(".btn--scroll-to")
   .addEventListener("click", function () {
-    const section1 = document.getElementById("section--1");
     section1.scrollIntoView({
       behavior: "smooth",
     });
@@ -54,7 +54,7 @@ tabsContainer.addEventListener("click", e => {
 });
 
 // handle change opacity when hovering the nav
-const nav = document.querySelector(".nav__links");
+const nav = document.querySelector(".nav");
 
 const handleChangeOpacity = function (e) {
   if (!e.target.classList.contains("nav__link")) return;
@@ -68,3 +68,17 @@ const handleChangeOpacity = function (e) {
 
 nav.addEventListener("mouseover", handleChangeOpacity.bind(0.5));
 nav.addEventListener("mouseout", handleChangeOpacity.bind(1));
+
+// handle using IntersectionObsever for nav
+const navHeight = nav.getBoundingClientRect().height;
+const handleNavStick = (entries, observer) => {
+  const [entry] = entries;
+  if (!entry.isIntersecting) nav.classList.add("sticky");
+  else nav.classList.remove("sticky");
+};
+const headerObserver = new IntersectionObserver(handleNavStick, {
+  root: null,
+  rootMargin: `-${navHeight}px`,
+  threshold: 0,
+});
+headerObserver.observe(header);
