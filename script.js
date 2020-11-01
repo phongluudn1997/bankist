@@ -82,3 +82,22 @@ const headerObserver = new IntersectionObserver(handleNavStick, {
   threshold: 0,
 });
 headerObserver.observe(header);
+
+// Handle reveal sections
+const allSections = document.querySelectorAll(".section");
+const reviewSectionHandler = (entries, observer) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.remove("section--hidden");
+    observer.unobserve(entry.target);
+  });
+};
+const observer = new IntersectionObserver(reviewSectionHandler, {
+  root: null,
+  threshold: 0.15,
+});
+
+allSections.forEach(section => {
+  observer.observe(section);
+  section.classList.add("section--hidden");
+});
