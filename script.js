@@ -30,3 +30,24 @@ document.querySelector(".nav__links").addEventListener("click", function (e) {
     document.querySelector(idScrollTo).scrollIntoView({ behavior: "smooth" });
   }
 });
+
+// handle tab clicked
+const tabsContainer = document.querySelector(".operations__tab-container");
+const tabs = document.querySelectorAll(".operations__tab");
+const operationsContent = document.querySelectorAll(".operations__content");
+
+tabsContainer.addEventListener("click", e => {
+  const clickedButton = e.target.closest(".operations__tab");
+  if (!clickedButton) return;
+  const activeContent = document.querySelector(
+    `.operations__content--${clickedButton.dataset.tab}`
+  );
+
+  tabs.forEach(t => t.classList.remove("operations__tab--active"));
+  operationsContent.forEach(c =>
+    c.classList.remove("operations__content--active")
+  );
+
+  clickedButton.classList.add("operations__tab--active");
+  activeContent.classList.add("operations__content--active");
+});
