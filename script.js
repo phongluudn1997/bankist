@@ -17,5 +17,7 @@ document
   .querySelector(".btn--scroll-to")
   .addEventListener("click", function () {
     const section1 = document.getElementById("section--1");
-    section1.scrollIntoView({ behavior: "smooth" });
+    section1.scrollIntoView({
+      behavior: "smooth",
+    });
   });
