@@ -1,9 +1,13 @@
 const message = document.createElement("div");
+const tabsContainer = document.querySelector(".operations__tab-container");
+const tabs = document.querySelectorAll(".operations__tab");
+const operationsContent = document.querySelectorAll(".operations__content");
+const header = document.querySelector(".header");
+
 message.classList.add("cookie-message");
 message.innerHTML =
   "We use cookied for improved functionality and analytics. <button class='btn btn--close-cookie'>Got it!</button> ";
 
-const header = document.querySelector(".header");
 header.append(message);
 
 document
@@ -32,9 +36,6 @@ document.querySelector(".nav__links").addEventListener("click", function (e) {
 });
 
 // handle tab clicked
-const tabsContainer = document.querySelector(".operations__tab-container");
-const tabs = document.querySelectorAll(".operations__tab");
-const operationsContent = document.querySelectorAll(".operations__content");
 
 tabsContainer.addEventListener("click", e => {
   const clickedButton = e.target.closest(".operations__tab");
@@ -51,3 +52,19 @@ tabsContainer.addEventListener("click", e => {
   clickedButton.classList.add("operations__tab--active");
   activeContent.classList.add("operations__content--active");
 });
+
+// handle change opacity when hovering the nav
+const nav = document.querySelector(".nav__links");
+
+const handleChangeOpacity = function (e) {
+  if (!e.target.classList.contains("nav__link")) return;
+  const logo = e.target.closest(".nav").querySelector("img");
+  logo.style.opacity = this;
+  const siblings = e.target.closest(".nav").querySelectorAll(".nav__link");
+  siblings.forEach(link => {
+    if (link !== e.target) link.style.opacity = this;
+  });
+};
+
+nav.addEventListener("mouseover", handleChangeOpacity.bind(0.5));
+nav.addEventListener("mouseout", handleChangeOpacity.bind(1));
