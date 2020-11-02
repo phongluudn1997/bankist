@@ -4,6 +4,10 @@ const tabs = document.querySelectorAll(".operations__tab");
 const operationsContent = document.querySelectorAll(".operations__content");
 const header = document.querySelector(".header");
 const section1 = document.getElementById("section--1");
+const slides = document.querySelectorAll(".slide");
+const nextBtn = document.querySelector(".slider__btn--right");
+const prevBtn = document.querySelector(".slider__btn--left");
+const dotsContainer = document.querySelector(".dots");
 
 message.classList.add("cookie-message");
 message.innerHTML =
@@ -125,3 +129,48 @@ const imgObserver = new IntersectionObserver(loadImg, {
 });
 
 imgTargets.forEach(img => imgObserver.observe(img));
+
+// handle slider
+
+slideHandler();
+
+function slideHandler() {
+  let currentSlide;
+  init();
+  function init() {
+    currentSlide = 0;
+    slides.forEach((_, index) => {
+      dotsContainer.insertAdjacentHTML(
+        "beforeend",
+        `<button class='dots__dot' data-slide='${index}'></button>`
+      );
+    });
+    goToSlide(0);
+    dotsContainer.addEventListener("click", function (e) {
+      if (!e.target.classList.contains("dots__dot")) return;
+      goToSlide(Number(e.target.dataset.slide));
+    });
+    nextBtn.addEventListener("click", moveSlideBy.bind(1));
+    prevBtn.addEventListener("click", moveSlideBy.bind(-1));
+  }
+  function goToSlide(num) {
+    currentSlide = num;
+    slides.forEach((slide, index) => {
+      slide.style.transform = `translateX(${(index - currentSlide) * 100}%)`;
+    });
+    document.querySelectorAll(".dots__dot").forEach(dot => {
+      dot.classList.remove("dots__dot--active");
+    });
+    document
+      .querySelector(`.dots__dot[data-slide="${num}"]`)
+      .classList.add("dots__dot--active");
+  }
+
+  function moveSlideBy() {
+    currentSlide += this;
+    if (currentSlide > slides.length - 1 || currentSlide < 0) {
+      currentSlide = Math.abs(slides.length - 1 - currentSlide) - 1;
+    }
+    goToSlide(currentSlide);
+  }
+}
